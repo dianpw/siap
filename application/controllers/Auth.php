@@ -12,12 +12,17 @@ class Auth extends CI_Controller {
 	{
 		$this->form_validation->set_rules('username', 'Username', 'required|trim');
 		$this->form_validation->set_rules('password', 'Password', 'required|trim');
-		
+
 		if ($this->form_validation->run() == false) {
 			$data['title'] = "SIAP Login";
+			//$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Login Gagal, Silahkan Coba Lagi!</div>');
 			$this->load->view('auth/login', $data);
 		}else{
-			echo "string";
+			
+			$this->_login();
 		}
+	}
+	private function _login(){
+		
 	}
 }

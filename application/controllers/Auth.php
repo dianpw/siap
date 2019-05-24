@@ -31,11 +31,25 @@ class Auth extends CI_Controller {
 					
 				if (md5($password) == $user['password']) {
 					$data = [
-						'username' = $user['username'],
-						'role_id' = $user['role_id']
+						'username' => $user['username'],
+						'role_id' => $user['role_id']
 					];
 					$this->session->set_userdata($data);
-					redirect('user');
+					if ($user['role_id'] == 1) {
+						# admin
+						redirect('admin');
+					}elseif ($user['role_id'] == 2) {
+						# akuntan
+						redirect('akuntan');
+					}elseif ($user['role_id'] == 3) {
+						# iklan
+						redirect('iklan');
+					}elseif ($user['role_id'] == 4) {
+						# koran
+						redirect('koran');
+					}else{
+						redirect('auth/logout');
+					}
 
 				}else{
 				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Password Salah</div>');
@@ -50,5 +64,13 @@ class Auth extends CI_Controller {
 			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Login Gagal, Silahkan Coba Lagi!</div>');
 			redirect('auth');
 		}
+	}
+
+	public function logout(){
+		$this->session->unset_userdata('username');
+		$this->session->unset_userdata('role_id');
+		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Logout berhasil</div>');
+		redirect('auth');
+
 	}
 }

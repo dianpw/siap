@@ -11,16 +11,19 @@ class Auth extends CI_Controller {
 
 	public function index()
 	{
-		$this->form_validation->set_rules('username', 'Username', 'required|trim');
-		$this->form_validation->set_rules('password', 'Password', 'required|trim');
+		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email', [
+    		'required' => 'Email Tidak Boleh Kosong',
+    		'valid_email' => 'Format Email tidak Valid'
+    	]);
+    	$this->form_validation->set_rules('password', 'Password', 'required|trim', [
+    		'required' => 'Password Tidak Boleh Kosong'
+    	]);
 
-		if ($this->form_validation->run() == false) {
-			$data['title'] = "SIAP Login";
-			
-			$this->load->view('auth/login', $data);
-		}else{
-			
-			$this->_login();
+    	if ($this->form_validation->run() == false) {
+    		$data['title'] = "Login";
+			$this->load->view('auth/signin', $data);
+    	}else{
+    		$this->auth->login();
 		}
 	}
 	private function _login(){

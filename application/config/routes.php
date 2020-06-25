@@ -60,4 +60,4 @@ $route['register']			= 'auth/register';
 //$route['recover']			= 'user/recover'; 
 //$route['activate/(:any)']	= 'user/activate/$1';
 //$route['reset/(:any)']		= 'user/reset/$1';
-//$route['logout']			= 'user/logout'; 
+$route['logout']			= 'auth/logout'; 

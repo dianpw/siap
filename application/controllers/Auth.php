@@ -11,9 +11,8 @@ class Auth extends CI_Controller {
 
 	public function index()
 	{
-		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email', [
-    		'required' => 'Email Tidak Boleh Kosong',
-    		'valid_email' => 'Format Email tidak Valid'
+		$this->form_validation->set_rules('username', 'Username', 'required|trim', [
+    		'required' => 'Username Tidak Boleh Kosong'
     	]);
     	$this->form_validation->set_rules('password', 'Password', 'required|trim', [
     		'required' => 'Password Tidak Boleh Kosong'
@@ -58,10 +57,10 @@ class Auth extends CI_Controller {
 	}
 
 	public function logout(){
-		$this->session->unset_userdata('username');
-		$this->session->unset_userdata('role_id');
+		$this->session->unset_userdata('id_account');
+		$this->session->unset_userdata('role');
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Logout berhasil</div>');
-		redirect('auth');
+		redirect('login');
 
 	}
 }

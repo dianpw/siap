@@ -10,12 +10,43 @@ class User extends CI_Model
 		//INNER JOIN account ON account.id_login=login.id_login 
 		//INNER JOIN role_account ON role_account.id_role=login.id_role 
 		//WHERE account.username='' AND login.password=''
-		$this->db->select('account.id_account, login.password, role_account.role');
+		$this->db->select('account.id_account, login.password, role_account.role, login.status');
 		$this->db->join('account', 'account.id_login=login.id_login');
 		$this->db->join('role_account', 'role_account.id_role=login.id_role');
-		$this->db->where('account.username', $post['email']);
-		$this->db->where('login.status', 1);
-        $user = $this->db->get('login')->row_array(); 
+		$this->db->where('account.username', $post['username']);
+		//$this->db->where('login.status', 1);
+		$user = $this->db->get('login')->row_array(); 
+		
+		if ($user) {
+			if (password_verify($post["password"], $user["password"])) {
+				if ($user["status"] == '0') {
+					$this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert"> Your account is not activated. Please contact your administrator!</div>');
+					redirect('singin');
+				}
+				$id_account = $user['id_account'];
+				$role 		= $user['role'];
+				$log =[
+					'id_log' 		=> uniqid(),
+					'id_account' 	=> $id_account,
+					'log' 			=> htmlspecialchars($post['username']) . ' was successful login on ' . date('l, d-m-Y H:i:s')
+				];
+				$this->db->insert('log', $log);
+
+
+				$data = [
+					'id_account' 	=> $id_account,
+					'role' 			=> $role
+				];
+				$this->session->set_userdata($data);
+				redirect('home');
+			}else{
+				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Wrong password please try again!</div>');
+				redirect('signin');
+			}
+		}else{
+			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Username not found!</div>');
+				redirect('signin');
+		}
 	}
 	
 	public function register()

@@ -11,6 +11,7 @@ class Account extends CI_Controller {
     public function index(){
 
         $data['profil'] = $this->user->getAccount();
+        $data['logs'] = $this->user->getLogs();
         if ($this->session->userdata('role') == '5ef49b3c63cff') { //Administrator
             $data['title'] = "Administrator";
             $this->load->view('account/administrator', $data);
@@ -27,8 +28,18 @@ class Account extends CI_Controller {
             $data['title'] = "User";
             $this->load->view('account/home', $data);
         }
-        var_dump($data);
+        //var_dump($data);
+    }
 
+    public function up_profile(){
+        $status = $this->user->editProfile();
+        
+        if ($status) {
+            redirect('home');
+        }else{
+            redirect('home');
+        }
+        
     }
 
 }

@@ -28,7 +28,33 @@ class Auth extends CI_Controller {
 	}
 
 	public function register(){
-		
+		$this->form_validation->set_rules('username', 'Username', 'required|trim|min_length[5]|max_length[10]|is_unique[account.username]', [
+    		'required' 		=> 'Username Tidak Boleh Kosong',
+    		'is_unique' 	=> 'Username Sudah Terdaftar',
+    		'min_length' 	=> 'Username Minimal 5 Karakter',
+    		'max_length'	=> 'Username Maksimal 10 Karakter'
+    	]);
+
+		$this->form_validation->set_rules('nama', 'Nama', 'required|trim', [
+    		'required' 		=> 'Nama Tidak Boleh Kosong'
+    	]);
+
+    	$this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[5]|matches[repassword]', [
+    		'required' 	    => 'Password Tidak Boleh Kosong',
+    		'matches'       => 'Password tidak sama',
+    		'min_length'    => 'Password Minimal 5 Karakter'
+    	]);
+
+    	$this->form_validation->set_rules('repassword', 'Re-password', 'required|trim',[
+    		'required' => 'Re-password Tidak Boleh Kosong'
+    	]);
+
+    	if ($this->form_validation->run() == false) {
+			$data['title'] = "REGISTER";
+    		$this->load->view('auth/register', $data);
+    	}else{
+    		$this->user->register();
+    	}
 	}
 
 	public function logout(){

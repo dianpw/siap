@@ -9,8 +9,7 @@ class Auth extends CI_Controller {
         $this->load->model("user");
 	}
 
-	public function index()
-	{
+	public function index(){
 		$this->form_validation->set_rules('username', 'Username', 'required|trim', [
     		'required' => 'Username Tidak Boleh Kosong'
     	]);

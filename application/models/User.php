@@ -49,8 +49,7 @@ class User extends CI_Model
 		}
 	}
 	
-	public function register()
-	{
+	public function register(){
 		$post 			= $this->input->post();
 		$id_login	 	= uniqid();
 		$id_role 		= '5ef49bfeabf92'; //default role is user

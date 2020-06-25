@@ -10,7 +10,7 @@ class User extends CI_Model
 		//INNER JOIN account ON account.id_login=login.id_login 
 		//INNER JOIN role_account ON role_account.id_role=login.id_role 
 		//WHERE account.username='' AND login.password=''
-		$this->db->select('account.id_account, login.password, role_account.role, login.status');
+		$this->db->select('account.id_account, login.password, role_account.id_role, login.status');
 		$this->db->join('account', 'account.id_login=login.id_login');
 		$this->db->join('role_account', 'role_account.id_role=login.id_role');
 		$this->db->where('account.username', $post['username']);
@@ -24,14 +24,13 @@ class User extends CI_Model
 					redirect('singin');
 				}
 				$id_account = $user['id_account'];
-				$role 		= $user['role'];
+				$role 		= $user['id_role'];
 				$log =[
 					'id_log' 		=> uniqid(),
 					'id_account' 	=> $id_account,
 					'log' 			=> htmlspecialchars($post['username']) . ' was successful login on ' . date('l, d-m-Y H:i:s')
 				];
 				$this->db->insert('log', $log);
-
 
 				$data = [
 					'id_account' 	=> $id_account,
@@ -100,5 +99,24 @@ class User extends CI_Model
 			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Register failed! Username not valid</div>');
 	        redirect('register');
 		}
+	}
+	
+	public function getAccount(){
+		//SELECT profil.nama, profil.nrg, profil.telp, profil.foto, role_account.role, login.status, account.username
+		//FROM `profil`
+		//INNER JOIN account ON account.id_account=profil.id_account
+		//INNER JOIN login ON login.id_login=account.id_login
+		//INNER JOIN role_account ON role_account.id_role=login.id_role
+		//WHERE account.id_account='' AND role_account.id_role=''
+		$id_account = $this->session->userdata('id_account');
+		$id_role = $this->session->userdata('role');
+		$this->db->select('profil.nama, profil.nrg, profil.telp, profil.foto, role_account.role, login.status, account.username');
+		$this->db->join('account', 'account.id_account=profil.id_account');
+		$this->db->join('login', 'login.id_login=account.id_login');
+		$this->db->join('role_account', 'role_account.id_role=login.id_role');
+		$this->db->where('account.id_account', $id_account);
+		$this->db->where('role_account.id_role', $id_role);
+		$hasil = $this->db->get('profil'); 
+		return $hasil->row_array();
 	}
 }

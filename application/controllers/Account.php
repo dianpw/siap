@@ -9,6 +9,9 @@ class Account extends CI_Controller {
     }
     
     public function index(){
+        if ($this->session->userdata('id_account') == null){
+            redirect('login');
+        }
 
         $data['profil'] = $this->user->getAccount();
         $data['logs'] = $this->user->getLogs();

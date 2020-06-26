@@ -9,7 +9,12 @@ class Auth extends CI_Controller {
         $this->load->model("user");
 	}
 
-	public function index(){
+	public function index(){		
+        if ($this->session->userdata('id_account') != null){
+            redirect('home');
+		}
+		
+		echo $this->session->userdata('id_account');
 		$this->form_validation->set_rules('username', 'Username', 'required|trim', [
     		'required' => 'Username Tidak Boleh Kosong'
     	]);
@@ -25,7 +30,11 @@ class Auth extends CI_Controller {
 		}
 	}
 
-	public function register(){
+	public function register(){				
+        if ($this->session->userdata('id_account') != null){
+            redirect('home');
+		}
+		echo $this->session->userdata('id_account');
 		$this->form_validation->set_rules('username', 'Username', 'required|trim|min_length[5]|max_length[10]|is_unique[account.username]', [
     		'required' 		=> 'Username Tidak Boleh Kosong',
     		'is_unique' 	=> 'Username Sudah Terdaftar',

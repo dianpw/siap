@@ -148,16 +148,7 @@ class User extends CI_Model
 			'foto' => $foto
 		];
 		$this->db->where('id_account', $this->session->userdata('id_account'));
-		$hasil = $this->db->update('profil', $data);
-		if ($hasil) {			
-			$log =[
-				'id_log' 		=> uniqid(),
-				'id_account' 	=> $this->session->userdata('id_account'),
-				'log' 			=> $profil['username'] . ' was successful update profile on ' . date('l, d-m-Y H:i:s')
-			];
-			$this->db->insert('log', $log);
-		}
-
+		$this->db->update('profil', $data);
 		//password
 		if (!empty($post["password"]) AND !empty($post["repassword"]) AND $post["password"]=$post["repassword"]) {
 			$password = password_hash($post["repassword"], PASSWORD_DEFAULT);

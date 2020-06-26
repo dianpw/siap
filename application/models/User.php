@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+date_default_timezone_set('Asia/Jakarta');
 
 class User extends CI_Model 
 {
@@ -148,7 +149,15 @@ class User extends CI_Model
 			'foto' => $foto
 		];
 		$this->db->where('id_account', $this->session->userdata('id_account'));
-		$this->db->update('profil', $data);
+		$prof = $this->db->update('profil', $data);
+		if ($prof) {
+			$log =[
+				'id_log' 		=> uniqid(),
+				'id_account' 	=> $this->session->userdata('id_account'),
+				'log' 			=> $profil['username'] . ' was successful change photo profile on ' . date('l, d-m-Y H:i:s')
+			];
+			$this->db->insert('log', $log);
+		}
 		//password
 		if (!empty($post["password"]) AND !empty($post["repassword"]) AND $post["password"]=$post["repassword"]) {
 			$password = password_hash($post["repassword"], PASSWORD_DEFAULT);
@@ -165,7 +174,6 @@ class User extends CI_Model
 			];
 			$this->db->insert('log', $log);
         }
-
 	}
 
 	private function _uploadProfil()

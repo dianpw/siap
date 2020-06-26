@@ -2,6 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Account extends CI_Controller {
+    /**
+	 * Controller Account
+	 *
+	 * 
+	 * @see maliki.id
+	 */
     public function __construct(){
 		parent::__construct();
 		$this->load->library('form_validation');

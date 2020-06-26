@@ -2,8 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('Asia/Jakarta');
 
-class User extends CI_Model 
-{
+class User extends CI_Model {
+    /**
+	 * Model User
+	 *
+	 * 
+	 * @see maliki.id
+	 */
     public function login(){
         $post = $this->input->post();
 		//SELECT account.id_account, account.username, login.password, role_account.role 

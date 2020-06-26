@@ -29,7 +29,7 @@ class Account extends CI_Controller {
             $this->load->view('account/admin', $data);
         }elseif ($this->session->userdata('role') == '5ef49bfeabf92') {//User
             $data['title'] = "User";
-            $this->load->view('account/home', $data);
+            $this->load->view('account/profile', $data);
         }
         //var_dump($data);
     }
@@ -41,8 +41,33 @@ class Account extends CI_Controller {
             redirect('home');
         }else{
             redirect('home');
-        }
+        }        
+    }
+
+    public function profile(){
         
+        if ($this->session->userdata('id_account') == null){
+            redirect('login');
+        }
+        $data['profil'] = $this->user->getAccount();
+        $data['logs'] = $this->user->getLogs();
+        if ($this->session->userdata('role') == '5ef49b3c63cff') { //Administrator
+            $data['title'] = "Administrator";
+            $this->load->view('account/profile', $data);
+        }elseif ($this->session->userdata('role') == '5ef49b44b491f') {//Owner
+            $data['title'] = "Owner";
+            $this->load->view('account/profile', $data);
+        }elseif ($this->session->userdata('role') == '5ef49b4c1eb6b') {//Accounting
+            $data['title'] = "Accounting";
+            $this->load->view('account/profile', $data);
+        }elseif ($this->session->userdata('role') == '5ef49b5314fc9') {//Admin
+            $data['title'] = "Admin";
+            $this->load->view('account/profile', $data);
+        }elseif ($this->session->userdata('role') == '5ef49bfeabf92') {//User
+            $data['title'] = "User";
+            $this->load->view('account/profile', $data);
+        }
+
     }
 
 }
